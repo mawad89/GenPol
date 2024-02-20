@@ -1,0 +1,81 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Mar  1 19:54:49 2020
+
+@author: awad
+"""
+def sdi_man(sdi):
+    a=list(open(sdi))
+    b=[]
+    for base in a:
+        if base.split('\t')[2]=='0':  
+            b.append(base)
+        else:
+            c=base.split('\t')
+            d=int(c[2])
+            if d>0 and c[3]=='-':
+                n=0
+                while n<d:
+                    cc=[c[0],c[1],c[2],c[3],c[4],c[5],c[6]]
+                    cc[1]=str(int(c[1])+n)
+                    cc[2]='1'
+                    cc[4]=c[4][n]
+                    b.append('\t'.join(cc))
+                    n=n+1
+            elif d>0 and c[3]!='-':
+                n=0
+                s=len(c[3])
+                while n<s:
+                    cc=[c[0],c[1],c[2],c[3],c[4],c[5],c[6]]
+                    cc[1]=str(int(c[1])+n)
+                    cc[2]='0'
+                    cc[4]=c[4][n]
+                    cc[3]=c[3][n]
+                    b.append('\t'.join(cc))
+                    n=n+1
+                n=0
+                c=[cc[0],str(int(cc[1])+1),c[2],'-',c[4][s:],cc[5],cc[6]]
+                while n<d:
+                    cc=[c[0],c[1],c[2],c[3],c[4],c[5],c[6]]
+                    cc[1]=str(int(c[1])+n)
+                    cc[2]='1'
+                    cc[4]=c[4][n]
+                    b.append('\t'.join(cc))
+                    n=n+1
+                
+            elif d<0 and c[4]=='-':
+                d=d*-1
+                n=0
+                while n<d:
+                    cc=[c[0],c[1],c[2],c[3],c[4],c[5],c[6]]
+                    cc[1]=str(int(c[1])+n)
+                    cc[2]='-1'
+                    cc[3]=c[3][n]
+                    b.append('\t'.join(cc))
+                    n=n+1
+            elif d<0 and c[4]!='-':
+                d=d*-1
+                n=0
+                s=len(c[4])
+                while n<s:
+                    cc=[c[0],c[1],c[2],c[3],c[4],c[5],c[6]]
+                    cc[1]=str(int(c[1])+n)
+                    cc[2]='0'
+                    cc[4]=c[4][n]
+                    cc[3]=c[3][n]
+                    b.append('\t'.join(cc))
+                    n=n+1
+                n=0
+                c=[cc[0],str(int(cc[1])+1),c[2],c[3][s:],'-',cc[5],cc[6]]
+                while n<d:
+                    cc=[c[0],c[1],c[2],c[3],c[4],c[5],c[6]]
+                    cc[1]=str(int(c[1])+n)
+                    cc[2]='-1'
+                    cc[3]=c[3][n]
+                    b.append('\t'.join(cc))
+                    n=n+1
+    e=open(sdi.replace('.sdi','.new.sdi'),'w')
+    e.writelines(''.join(b))
+    e.close()
+    return(b)
